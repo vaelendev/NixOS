@@ -28,7 +28,7 @@
   console.keyMap = "fr";
 
   fileSystems."/mnt/data" = {
-	device = "/dev/disk/by-uuid/19d135e3-4cde-4132-9e90-2fc54d3b8a16";
+	device = "/dev/disk/by-uuid/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
 	fsType = "ext4";
 	options = [ "defaults" "noatime" ];
   };
