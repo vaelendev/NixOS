@@ -9,7 +9,7 @@ also don't forget to change the username and the machine name (vaelen is the use
 in the **configuration.nix**
 ***device = "/dev/disk/by-uuid/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";***
 the "x" must be replace by the id of your disk
-Also don't forget to change the timezone below the disk init
+Also don't forget to change the timezone
 
 
 # Niri (Wayland)
