@@ -16,3 +16,7 @@ This is my style, this file must be place in **~/.config/mako/**
 
 # Fuzzel (App Drawer)
 This is my style, this file must be place in **~/.config/fuzzel/**
+
+# Neovim (Yes)
+Probably a hard config but wtv it's working like i wanted,
+must be placed in **~/.config/nvim/**
