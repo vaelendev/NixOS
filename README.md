@@ -13,3 +13,6 @@ also reminder to change the output in the file, the resolution and framerate (al
 
 # Mako (Notification)
 This is my style, this file must be place in **~/.config/mako/**
+
+# Fuzzel (App Drawer)
+This is my style, this file must be place in **~/.config/fuzzel/**
