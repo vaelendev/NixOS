@@ -1,9 +1,5 @@
 { config, lib, pkgs, ... }:
 
-let
-  ida = pkgs.callPackage ./ida.nix {};
-in
-
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -93,7 +89,7 @@ in
 	gcc clang gnumake cmake rustup pkg-config glibc fontconfig.dev freetype.dev vulkan-headers vulkan-validation-layers libGL wayland libxkbcommon alsa-lib zlib openssl curl icu dbus 
 	gtk3 udev
 	xorg.libX11 xorg.libXext xorg.libXcursor xorg.libXi xorg.libXrandr xorg.libXrender xorg.libXinerama xorg.libXScrnSaver xorg.libXfixes xorg.libxcb
-	ida openrgb-with-all-plugins
+	openrgb-with-all-plugins
   ];
   
   fonts.packages = with pkgs; [
