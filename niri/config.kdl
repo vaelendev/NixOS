@@ -8,7 +8,7 @@ input {
 }
 
 output "HDMI-A-1" {
-    mode "1920x1080@71.910004"
+    mode "1920x1080@200"
     transform "normal"
     position x=0 y=0
 }
@@ -36,6 +36,53 @@ window-rule {
 
 animations {
     slowdown 0.7
+
+    workspace-switch {
+        spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+    }
+
+    horizontal-view-movement {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    window-movement {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    window-resize {
+        spring damping-ratio=1.0 stiffness=750 epsilon=0.0001
+    }
+
+    window-open {
+        duration-ms 150
+        curve "ease-out-cubic"
+    }
+
+    window-close {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+
+    config-notification-open-close {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.001
+    }
+
+    exit-confirmation-open-close {
+        spring damping-ratio=1.0 stiffness=500 epsilon=0.01
+    }
+
+    screenshot-ui-open {
+        duration-ms 180
+        curve "linear"
+    }
+
+    overview-open-close {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+    }
+
+    recent-windows-close {
+        spring damping-ratio=1.0 stiffness=800 epsilon=0.001
+    }
 }
 
 prefer-no-csd
@@ -45,6 +92,11 @@ spawn-at-startup "systemctl" "--user" "start" "sunshine.service"
 overview {
     zoom 0.625
     backdrop-color "#000000"
+}
+
+window-rule {
+    match app-id="swayimg"
+    open-floating true
 }
 
 binds {
@@ -61,6 +113,7 @@ binds {
     Mod+D { spawn "fuzzel"; }
 
     F2 { screenshot; }
+    Shift+F2 { spawn "/home/vaelen/scripts/niri-screenshot-float.sh"; }
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
