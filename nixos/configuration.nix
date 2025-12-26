@@ -1,9 +1,32 @@
 { config, lib, pkgs, ... }:
 
+let
+  ida = pkgs.callPackage ./ida.nix {};
+in
+
 {
   imports = [ ./hardware-configuration.nix ];
 
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = false;
+    flake = "/etc/nixos#foxdroid";
+    dates = "daily";
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly" imv feh;
+    options = "--delete-older-than 14d";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = ["weekly"];
+  };
+
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "uinput" ];
@@ -28,7 +51,7 @@
   console.keyMap = "fr";
 
   fileSystems."/mnt/data" = {
-	device = "/dev/disk/by-uuid/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+	device = "/dev/disk/by-uuid/19d135e3-4cde-4132-9e90-2fc54d3b8a16";
 	fsType = "ext4";
 	options = [ "defaults" "noatime" ];
   };
@@ -42,7 +65,16 @@
 	];
   };
   hardware.amdgpu.opencl.enable = true;
-  
+  hardware.cpu.amd.updateMicrocode = true;
+  services.fwupd.enable = true;
+  services.fstrim.enable = true;
+
+  # bluetooth (disable)
+  #hardware.bluetooth = {
+  #  enable = false;
+  #  powerOnBoot = false;
+  #};
+
   services.xserver.enable = true;
   services.displayManager.gdm = {
 	enable = true;
@@ -81,7 +113,7 @@
   environment.systemPackages = with pkgs; [
 	vim wget git fuzzel niri neovim xwayland-satellite xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk fastfetch brave avahi 
 	(discord.override { withVencord = true; }) obs-studio nushell steam superfile mako ghostty mplayer ffmpeg moonlight-qt lutris wine gnome-keyring kdePackages.polkit-kde-agent-1 
-	swaybg protonplus playerctl 
+	swaybg protonplus playerctl cmus 
 	iw razer-cli evtest avizo lm_sensors python3 nautilus unzip prismlauncher gtop appimage-run pipewire wireplumber libglvnd cava openrazer-daemon polychromatic tty-clock 
 	sunshine obsidian zerotierone termius protonup-qt
 	gamemode fuse nh zig zls zip mangohud blender corectrl
@@ -89,12 +121,14 @@
 	gcc clang gnumake cmake rustup pkg-config glibc fontconfig.dev freetype.dev vulkan-headers vulkan-validation-layers libGL wayland libxkbcommon alsa-lib zlib openssl curl icu dbus 
 	gtk3 udev
 	xorg.libX11 xorg.libXext xorg.libXcursor xorg.libXi xorg.libXrandr xorg.libXrender xorg.libXinerama xorg.libXScrnSaver xorg.libXfixes xorg.libxcb
-	openrgb-with-all-plugins
+	ida openrgb-with-all-plugins protonvpn-gui figma-linux swayimg
   ];
   
   fonts.packages = with pkgs; [
   	nerd-fonts.iosevka noto-fonts noto-fonts-cjk-sans noto-fonts-color-emoji
   ];
+
+  nix.settings.auto-optimise-store = true;
 
   programs.niri.enable = true;
   programs.steam = {
