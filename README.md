@@ -1,4 +1,7 @@
+
+
 # NixOS
+## DON'T FORGET TO CHANGE THE "vaelen" (aka my user) into your user in all files same for the "foxdroid" !
 
 **configuration.nix**
 **flake.nix**
