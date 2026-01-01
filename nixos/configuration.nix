@@ -111,17 +111,17 @@ in
   
   # systemd.tmpfiles.rules = [ "d /home/vaelen/.idapro 0700 vaelen vaelen -" ];
   environment.systemPackages = with pkgs; [
-	vim wget git fuzzel niri neovim xwayland-satellite xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk fastfetch brave avahi 
-	(discord.override { withVencord = true; }) obs-studio nushell steam superfile mako ghostty mplayer ffmpeg moonlight-qt lutris wine gnome-keyring kdePackages.polkit-kde-agent-1 
-	swaybg protonplus playerctl cmus 
-	iw razer-cli evtest avizo lm_sensors python3 nautilus unzip prismlauncher gtop appimage-run pipewire wireplumber libglvnd cava openrazer-daemon polychromatic tty-clock 
-	sunshine obsidian zerotierone termius protonup-qt
-	gamemode fuse nh zig zls zip mangohud blender corectrl
-	ffmpegthumbnailer fd ripgrep file
-	gcc clang gnumake cmake rustup pkg-config glibc fontconfig.dev freetype.dev vulkan-headers vulkan-validation-layers libGL wayland libxkbcommon alsa-lib zlib openssl curl icu dbus 
-	gtk3 udev
-	xorg.libX11 xorg.libXext xorg.libXcursor xorg.libXi xorg.libXrandr xorg.libXrender xorg.libXinerama xorg.libXScrnSaver xorg.libXfixes xorg.libxcb
-	ida openrgb-with-all-plugins protonvpn-gui figma-linux swayimg
+        vim wget git fuzzel niri neovim xwayland-satellite xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk fastfetch brave avahi
+        (discord.override { withVencord = true; }) obs-studio nushell steam superfile mako ghostty mplayer ffmpeg moonlight-qt lutris wine gnome-keyring kdePackages.polkit-kde-agent-1
+        swaybg protonplus playerctl cmus
+        iw razer-cli evtest avizo lm_sensors python3 nautilus unzip prismlauncher gtop appimage-run pipewire wireplumber libglvnd cava openrazer-daemon polychromatic tty-clock
+        sunshine obsidian zerotierone termius protonup-qt
+        gamemode fuse nh zig zls zip mangohud blender-hip corectrl
+        ffmpegthumbnailer fd ripgrep file
+        gcc clang gnumake cmake rustup pkg-config glibc fontconfig.dev freetype.dev vulkan-tools vulkan-headers vulkan-validation-layers vulkan-extension-layer libGL wayland libxkbcommon alsa-lib zlib openssl curl icu dbus
+        gtk3 udev
+        xorg.libX11 xorg.libXext xorg.libXcursor xorg.libXi xorg.libXrandr xorg.libXrender xorg.libXinerama xorg.libXScrnSaver xorg.libXfixes xorg.libxcb
+        ida openrgb-with-all-plugins protonvpn-gui figma-linux swayimg rustup radeontop gnome-tweaks qogir-theme gamescope
   ];
   
   fonts.packages = with pkgs; [
@@ -174,6 +174,7 @@ in
 	LD_LIBRARY_PATH = "/run/current-system/sw/lib";
 	LIBRARY_PATH = "/run/current-system/sw/lib";
 	PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
+    GTK_THEME = "Qogir-Dark";
   };
   
   systemd.user.services.polkit-agent = {
