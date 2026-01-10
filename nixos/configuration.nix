@@ -1,32 +1,13 @@
 { config, lib, pkgs, ... }:
 
-let
-  ida = pkgs.callPackage ./ida.nix {};
-in
-
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports =
+    [
+      ./hardware-configuration.nix
+    ];
 
-  system.autoUpgrade = {
-    enable = true;
-    allowReboot = false;
-    flake = "/etc/nixos#foxdroid";
-    dates = "daily";
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly" imv feh;
-    options = "--delete-older-than 14d";
-  };
-
-  nix.optimise = {
-    automatic = true;
-    dates = ["weekly"];
-  };
-
+  
   boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = [ "uinput" ];
@@ -49,7 +30,7 @@ in
 
   time.timeZone = "Europe/Paris";
   console.keyMap = "fr";
-
+  
   fileSystems."/mnt/data" = {
 	device = "/dev/disk/by-uuid/19d135e3-4cde-4132-9e90-2fc54d3b8a16";
 	fsType = "ext4";
@@ -59,42 +40,32 @@ in
   hardware.graphics = {
 	enable = true;
 	enable32Bit = true;
-	extraPackages = with pkgs; [
-		rocmPackages.clr.icd
-		libva-vdpau-driver
-	];
   };
   hardware.amdgpu.opencl.enable = true;
+  services.fstrim.enable = true;
   hardware.cpu.amd.updateMicrocode = true;
   services.fwupd.enable = true;
-  services.fstrim.enable = true;
-
-  # bluetooth (disable)
-  #hardware.bluetooth = {
-  #  enable = false;
-  #  powerOnBoot = false;
-  #};
-
+  
   services.xserver.enable = true;
   services.displayManager.gdm = {
 	enable = true;
 	wayland = true;
   };
   services.xserver.xkb.layout = "fr";
-  services.xserver.xkb.options = "grp_led:scroll";
+  services.xserver.xkb.options = "grep_led:scroll";
 
   services.pipewire = {
-  	enable = true;
-	pulse.enable = true;
+    enable = true;
+    pulse.enable = true;
   };
   
   users.users.vaelen = {
-  	description = "Vaelen - Dev";
+	description = "Vaelen - Dev";
 	isNormalUser = true;
-	extraGroups = [ "wheel" "audio" "video" "input" "plugdev" ];
-	packages = with pkgs; [ tree ];
+	extraGroups = [ "wheel" "audio" "video" "input" "plugdev" ];	
+  	packages = with pkgs; [ tree ];
   };
-
+  
   hardware.openrazer = {
 	enable = true;
 	users = [ "vaelen" ];
@@ -104,32 +75,28 @@ in
 
   programs.nix-ld.enable = true;
   nixpkgs.config.allowUnfree = true;
-  # nixpkgs.config.permittedInsecurePackages = [ "mbedtls-2.28.10" ];
   nix.settings = {
 	experimental-features = [ "nix-command" "flakes" ];
   };
-  
-  # systemd.tmpfiles.rules = [ "d /home/vaelen/.idapro 0700 vaelen vaelen -" ];
   environment.systemPackages = with pkgs; [
-        vim wget git fuzzel niri neovim xwayland-satellite xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk fastfetch brave avahi
+	vim wget git fuzzel niri neovim xwayland-satellite xdg-desktop-portal xdg-desktop-portal-wlr xdg-desktop-portal-gtk fastfetch brave avahi
         (discord.override { withVencord = true; }) obs-studio nushell steam superfile mako ghostty mplayer ffmpeg moonlight-qt lutris wine gnome-keyring kdePackages.polkit-kde-agent-1
         swaybg protonplus playerctl cmus
         iw razer-cli evtest avizo lm_sensors python3 nautilus unzip prismlauncher gtop appimage-run pipewire wireplumber libglvnd cava openrazer-daemon polychromatic tty-clock
         sunshine obsidian zerotierone termius protonup-qt
         gamemode fuse nh zig zls zip mangohud blender-hip corectrl
         ffmpegthumbnailer fd ripgrep file
-        gcc clang gnumake cmake rustup pkg-config glibc fontconfig.dev freetype.dev vulkan-tools vulkan-headers vulkan-validation-layers vulkan-extension-layer libGL wayland libxkbcommon alsa-lib zlib openssl curl icu dbus
+        gcc clang clang-tools gnumake cmake rustup pkg-config glibc fontconfig.dev freetype.dev vulkan-tools vulkan-headers vulkan-validation-layers vulkan-extension-layer libGL wayland libxkbcommon 
+        alsa-lib zlib openssl curl icu dbus
         gtk3 udev
         xorg.libX11 xorg.libXext xorg.libXcursor xorg.libXi xorg.libXrandr xorg.libXrender xorg.libXinerama xorg.libXScrnSaver xorg.libXfixes xorg.libxcb
-        ida openrgb-with-all-plugins protonvpn-gui figma-linux swayimg rustup radeontop gnome-tweaks qogir-theme gamescope
+        openrgb-with-all-plugins protonvpn-gui figma-linux swayimg rustup radeontop gnome-tweaks qogir-theme gamescope   
+  ];
+
+  fonts.packages = with pkgs; [
+	nerd-fonts.iosevka noto-fonts noto-fonts-cjk-sans noto-fonts-color-emoji
   ];
   
-  fonts.packages = with pkgs; [
-  	nerd-fonts.iosevka noto-fonts noto-fonts-cjk-sans noto-fonts-color-emoji
-  ];
-
-  nix.settings.auto-optimise-store = true;
-
   programs.niri.enable = true;
   programs.steam = {
 	enable = true;
@@ -137,18 +104,18 @@ in
 	remotePlay.openFirewall = true;
 	dedicatedServer.openFirewall = true;
   };
-  
+
   xdg.portal = {
-  	enable = true;
+	enable = true;
 	wlr.enable = true;
 	extraPortals = with pkgs; [
 		xdg-desktop-portal-gtk
-		xdg-desktop-portal-gnome
 		xdg-desktop-portal-wlr
+		xdg-desktop-portal-gnome		
 	];
   };
-  
-  environment.etc."xdg-desktop-portal/niri-portal.conf".text = ''
+
+   environment.etc."xdg-desktop-portal/niri-portal.conf".text = ''
 	[preferred]
 	default=gtk
 	org.freedesktop.impl.portal.FileChooser=gtk
@@ -198,15 +165,6 @@ in
 	});
   '';
 
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;  # ou nssmdns = true; selon la version
-    publish = {
-      enable = true;
-      userServices = true;
-    };
-  };
-  
   services.sunshine = {
     enable = true;
     autoStart = false;
@@ -222,12 +180,6 @@ in
       { from = 48010; to = 48010; }
     ];
   };
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
-
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #
